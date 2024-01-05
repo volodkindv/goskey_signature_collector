@@ -1,0 +1,8 @@
+.vscode
+*.pyc
+.venv
+.local/*
+*.log
+.coverage
+build/*
+config.py
