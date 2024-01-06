@@ -9,10 +9,14 @@ def main() -> None:
     parser.add_argument("-o", "--output", type=str, help="result filename (JSON)")
 
     args = parser.parse_args()
-    infos = extract_cert_infos_from_directory(args.source)
+    extract(args.source, args.output)
+
+
+def extract(source: str, output: str | None) -> None:
+    infos = extract_cert_infos_from_directory(source)
     dumped = infos.model_dump_json(indent=2)
-    if args.output:
-        with open(args.output, "w", encoding="utf8") as result_file:
+    if output:
+        with open(output, "w", encoding="utf8") as result_file:
             result_file.write(dumped)
     else:
         print(dumped)  # noqa: WPS421

@@ -2,6 +2,7 @@ from base64 import b64decode
 
 import pytest
 
+from src.cli import extract
 from src.main import extract_cert_info_from_sig_file, extract_cert_infos_from_directory
 
 
@@ -36,3 +37,9 @@ def test_extract_list_of_signatures():
     res = extract_cert_infos_from_directory(path).root
     assert len(res) == 2
     assert res[0].subject_name == "Володькин Данила Викторович"
+
+
+def test_cli_extract():
+    source = "tests/fixtures/mass"
+    output = "build/result.json"
+    extract(source, output)
