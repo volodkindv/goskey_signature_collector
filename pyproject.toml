@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "goskey-mass-sign"
+name = "goskey-signature-collector"
 version = "0.0.0"
-description = "tool for work with many digital signatures"
+description = "Сервис для сбора подписей под массовыми обращениями в госорганы"
 authors = ["volodkindv <volodkindv@yandex.ru>"]
 readme = "README.md"
 packages = [{include = "src", from = "."}]
