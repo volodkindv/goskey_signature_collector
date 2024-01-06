@@ -33,6 +33,6 @@ def test_extract_list_of_signatures():
     на входе каталог с файлами подписей. На выходе ожидаем массив данных по подписям.
     """
     path = "tests/fixtures/mass"
-    res = extract_cert_infos_from_directory(path)
+    res = extract_cert_infos_from_directory(path).root
     assert len(res) == 2
     assert res[0].subject_name == "Володькин Данила Викторович"

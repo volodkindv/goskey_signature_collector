@@ -2,12 +2,16 @@ from pathlib import Path
 
 from cryptography.hazmat.primitives.serialization.pkcs7 import load_der_pkcs7_certificates
 from cryptography.x509 import ObjectIdentifier
-from pydantic import BaseModel
+from pydantic import BaseModel, RootModel
 
 
 class CertificateShortInfo(BaseModel):
     subject_name: str
     subject_snils: str
+
+
+class CertificateInfosList(RootModel):
+    root: list[CertificateShortInfo]
 
 
 def extract_cert_info_from_sig_file(filename: str) -> CertificateShortInfo:
@@ -29,10 +33,10 @@ def extract_cert_info_from_sig_file(filename: str) -> CertificateShortInfo:
     )
 
 
-def extract_cert_infos_from_directory(path: str) -> list[CertificateShortInfo]:
+def extract_cert_infos_from_directory(path: str) -> CertificateInfosList:
     res: list[CertificateShortInfo] = []
 
     for filename in Path(path).glob("*.sig"):
         res.append(extract_cert_info_from_sig_file(str(filename)))
 
-    return res
+    return CertificateInfosList(root=res)
