@@ -11,6 +11,7 @@ packages = [{include = "src", from = "."}]
 python = "3.10.*"
 
 pydantic = "^2.5.2"
+cryptography = "^41.0.7"
 
 [tool.poetry.group.lint.dependencies]
 black = "^23.9.1"
