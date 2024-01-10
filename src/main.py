@@ -4,6 +4,7 @@ import subprocess  # noqa: S404
 from datetime import datetime
 from pathlib import Path
 
+import odswriter as ods
 from cryptography.hazmat.primitives.serialization.pkcs7 import load_der_pkcs7_certificates
 from cryptography.x509 import ObjectIdentifier
 from pydantic import BaseModel, RootModel
@@ -62,3 +63,31 @@ def extract_cert_infos_from_directory(path: str) -> SignaturesList:
         res.append(extract_cert_info_from_sig_file(str(filename)))
 
     return SignaturesList(root=res)
+
+
+def write_signatures_to_file(signatures: SignaturesList, filename: str) -> None:
+    with open(filename, "wb") as opened_file:
+        with ods.writer(opened_file) as odsfile:
+            my_sheet = odsfile.new_sheet("Signatures")
+
+            my_sheet.writerows(
+                [
+                    [
+                        "№",
+                        "Дата подписания",
+                        "ФИО",
+                        "СНИЛС",
+                    ],
+                ],
+            )
+            for number, signature in enumerate(signatures.root):
+                my_sheet.writerows(
+                    [
+                        [
+                            number + 1,
+                            signature.sign_date,
+                            signature.subject_name,
+                            signature.subject_snils,
+                        ],
+                    ],
+                )

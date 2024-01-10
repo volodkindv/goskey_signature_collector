@@ -1,10 +1,23 @@
+import os
 from base64 import b64decode
 from datetime import datetime
 
 import pytest
+from polyfactory.factories.pydantic_factory import ModelFactory
+
+from src.main import SignatureShortInfo, SignaturesList
+
+
+class SignaturesListFactory(ModelFactory[SignaturesList]):
+    pass
+
+
+class SignatureShortInfoFactory(ModelFactory[SignatureShortInfo]):
+    pass
+
 
 from src.cli import extract
-from src.main import extract_cert_info_from_sig_file, extract_cert_infos_from_directory
+from src.main import extract_cert_info_from_sig_file, extract_cert_infos_from_directory, write_signatures_to_file
 
 
 def bytes_from_base64_file(filename: str) -> bytes:
@@ -43,5 +56,17 @@ def test_extract_list_of_signatures():
 
 def test_cli_extract():
     source = "tests/fixtures/mass"
-    output = "build/result.json"
+    output = "build/result.ods"
     extract(source, output)
+
+
+def test_write_excel():
+    """TODO не перезаписывать существующий файл, бросать исключение"""
+    out_filename = "build/out.ods"
+    if os.path.exists(out_filename):
+        os.remove(out_filename)
+    signatures = SignaturesList(
+        root=SignatureShortInfoFactory.batch(10),
+    )
+    write_signatures_to_file(signatures, out_filename)
+    assert os.path.exists(out_filename)

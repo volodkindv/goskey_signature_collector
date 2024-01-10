@@ -12,6 +12,7 @@ python = "3.10.*"
 
 pydantic = "^2.5.2"
 cryptography = "^41.0.7"
+odswriter = "^0.4.0"
 
 [tool.poetry.group.lint.dependencies]
 black = "^23.9.1"

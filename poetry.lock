@@ -789,13 +789,13 @@ doc = ["Sphinx", "sphinx-rtd-theme", "sphinxcontrib-spelling"]
 
 [[package]]
 name = "faker"
-version = "22.0.0"
+version = "22.1.0"
 description = "Faker is a Python package that generates fake data for you."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "Faker-22.0.0-py3-none-any.whl", hash = "sha256:9c22c0a734ca01c6e4f2259eab5dab9081905a9d67b27272aea5c9feeb5a3789"},
-    {file = "Faker-22.0.0.tar.gz", hash = "sha256:1d5dc0a75da7bc40741ee4c84d99dc087b97bd086d4222ad06ac4dd2219bcf3f"},
+    {file = "Faker-22.1.0-py3-none-any.whl", hash = "sha256:d1b8fe8e8fc96d816294a301741940c2229dcf1f5dd1231805666e4005cc6353"},
+    {file = "Faker-22.1.0.tar.gz", hash = "sha256:3cd0e04ed7da1bb8037afc40d1127d19e0ac4afac247a1fe1d8dde9b5c6d6e5b"},
 ]
 
 [package.dependencies]
@@ -1293,13 +1293,13 @@ files = [
 
 [[package]]
 name = "more-itertools"
-version = "10.1.0"
+version = "10.2.0"
 description = "More routines for operating on iterables, beyond itertools"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "more-itertools-10.1.0.tar.gz", hash = "sha256:626c369fa0eb37bac0291bce8259b332fd59ac792fa5497b59837309cd5b114a"},
-    {file = "more_itertools-10.1.0-py3-none-any.whl", hash = "sha256:64e0735fcfdc6f3464ea133afe8ea4483b1c5fe3a3d69852e6503b43a0b222e6"},
+    {file = "more-itertools-10.2.0.tar.gz", hash = "sha256:8fccb480c43d3e99a00087634c06dd02b0d50fbf088b380de5a41a015ec239e1"},
+    {file = "more_itertools-10.2.0-py3-none-any.whl", hash = "sha256:686b06abe565edfab151cb8fd385a05651e1fdf8f0a14191e4439283421f8684"},
 ]
 
 [[package]]
@@ -1439,6 +1439,16 @@ files = [
 [package.extras]
 fast = ["fastnumbers (>=2.0.0)"]
 icu = ["PyICU (>=1.0.0)"]
+
+[[package]]
+name = "odswriter"
+version = "0.4.0"
+description = "A pure-Python module for writing OpenDocument spreadsheets (similar to csv.writer)."
+optional = false
+python-versions = "*"
+files = [
+    {file = "odswriter-0.4.0.tar.gz", hash = "sha256:f4c6195dc95cc4a7c2bd98a8e174ddfb9eb98b0329ffe9a740ee825a319d62a0"},
+]
 
 [[package]]
 name = "packaging"
@@ -2314,13 +2324,13 @@ files = [
 
 [[package]]
 name = "trove-classifiers"
-version = "2023.11.29"
+version = "2024.1.8"
 description = "Canonical source for classifiers on PyPI (pypi.org)."
 optional = false
 python-versions = "*"
 files = [
-    {file = "trove-classifiers-2023.11.29.tar.gz", hash = "sha256:ff8f7fd82c7932113b46e7ef6742c70091cc63640c8c65db00d91f2e940b9514"},
-    {file = "trove_classifiers-2023.11.29-py3-none-any.whl", hash = "sha256:02307750cbbac2b3d13078662f8a5bf077732bf506e9c33c97204b7f68f3699e"},
+    {file = "trove-classifiers-2024.1.8.tar.gz", hash = "sha256:6e36caf430ff6485c4b57a4c6b364a13f6a898d16b9417c6c37467e59c14b05a"},
+    {file = "trove_classifiers-2024.1.8-py3-none-any.whl", hash = "sha256:3c1ff4deb10149c7e39ede6e5bbc107def64362ef1ee7590ec98d71fb92f1b6a"},
 ]
 
 [[package]]
@@ -2519,4 +2529,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "3.10.*"
-content-hash = "27b1cd32b100734c961a469d856036edcb431e93a7e7073e687cce4d0a714f29"
+content-hash = "9f9fe6499e9574ffaa166171b9ff3f7feb15ca59fba2a9dbb8ce2db283956737"
