@@ -10,7 +10,7 @@
 
 ## Пример запуска:
 
-`python main.py --source tests/fixtures/mass --out list.ods`
+`python main.py --source tests/fixtures/mass --output list.ods`
 
 ## Параметры:
 
