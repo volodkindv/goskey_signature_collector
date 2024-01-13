@@ -103,7 +103,6 @@ explicit_package_bases = true
 ignore_missing_imports = true
 disallow_untyped_defs = true
 no_site_packages = true
-allow_untyped_defs = false
 plugins = [
     "pydantic.mypy",
 ]

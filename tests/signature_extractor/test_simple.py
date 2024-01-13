@@ -5,7 +5,7 @@ from datetime import datetime
 import pytest
 from polyfactory.factories.pydantic_factory import ModelFactory
 
-from src.main import SignatureShortInfo, SignaturesList
+from src.signature_extractor.main import SignatureShortInfo, SignaturesList
 
 
 class SignaturesListFactory(ModelFactory[SignaturesList]):
@@ -16,8 +16,12 @@ class SignatureShortInfoFactory(ModelFactory[SignatureShortInfo]):
     pass
 
 
-from src.cli import extract
-from src.main import extract_cert_info_from_sig_file, extract_cert_infos_from_directory, write_signatures_to_file
+from src.signature_extractor.cli import extract
+from src.signature_extractor.main import (
+    extract_cert_info_from_sig_file,
+    extract_cert_infos_from_directory,
+    write_signatures_to_file,
+)
 
 
 def bytes_from_base64_file(filename: str) -> bytes:
@@ -33,8 +37,11 @@ def bytes_from_binary_file(filename: str) -> bytes:
 @pytest.mark.parametrize(
     "filename,sign_date",
     [
-        ("tests/fixtures/NEP/IMG_20231227_085120.jpg.sig", datetime(2023, 12, 29, 18, 13, 55)),
-        ("tests/fixtures/KEP/Результат_оказания_услуги_11_29_41.pdf.sig", datetime(2023, 12, 29, 18, 7, 56)),
+        ("tests/signature_extractor/fixtures/NEP/IMG_20231227_085120.jpg.sig", datetime(2023, 12, 29, 18, 13, 55)),
+        (
+            "tests/signature_extractor/fixtures/KEP/Результат_оказания_услуги_11_29_41.pdf.sig",
+            datetime(2023, 12, 29, 18, 7, 56),
+        ),
     ],
 )
 def test_main_extract(filename: str, sign_date: datetime):
@@ -48,7 +55,7 @@ def test_extract_list_of_signatures():
     """
     на входе каталог с файлами подписей. На выходе ожидаем массив данных по подписям.
     """
-    path = "tests/fixtures/mass"
+    path = "tests/signature_extractor/fixtures/mass"
     res = extract_cert_infos_from_directory(path).root
     assert len(res) == 2
     assert res[0].subject_name == "Володькин Данила Викторович"
