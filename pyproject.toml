@@ -13,6 +13,8 @@ python = "3.10.*"
 pydantic = "^2.5.2"
 cryptography = "^41.0.7"
 odswriter = "^0.4.0"
+aiogram = "^3.3.0"
+pydantic-settings = "^2.1.0"
 
 [tool.poetry.group.lint.dependencies]
 black = "^23.9.1"
@@ -37,6 +39,7 @@ coverage-badge = "^1.1.0"
 factory_boy = "^3.2.1"
 pytest-xdist = "^3.4.0"
 polyfactory = "^2.13.0"
+aiogram-tests = "^1.0.3"
 
 [tool.poetry.group.dev.dependencies]
 poetry-plugin-export = "^1.6.0"
