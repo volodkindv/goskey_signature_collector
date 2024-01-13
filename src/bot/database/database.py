@@ -1,15 +1,11 @@
 from functools import lru_cache
 
-from pydantic import BaseModel
+from ..schemas.schemas import Appeal, UserContext
 
 
 @lru_cache
 def users_db() -> dict:
     return {}
-
-
-class UserContext(BaseModel):
-    pass
 
 
 def get_user_context(user_id: str) -> UserContext:
@@ -19,3 +15,14 @@ def get_user_context(user_id: str) -> UserContext:
         user_context = UserContext()
         db[user_id] = user_context
     return user_context
+
+
+async def get_current_appeals() -> list[Appeal]:
+    count = 5
+    return [
+        Appeal(
+            id=counter,
+            name=f"Сбор подписей {counter}",
+        )
+        for counter in range(count)
+    ]
