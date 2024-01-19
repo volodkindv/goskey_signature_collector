@@ -5,8 +5,16 @@ on:
     branches:
       - feature/bot
 jobs:
-  Explore-GitHub-Actions:
+  Deploy:
     runs-on: self-hosted
     steps:
-      - run: echo "start deploy"
-      - run: docker compose up --build
+      - name: Checkout
+        uses: actions/checkout@master
+        with:
+          ref: ${{ github.ref }}
+      - name: Compose
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+        run: |
+          docker compose down
+          docker compose up --build -d

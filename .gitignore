@@ -5,5 +5,4 @@
 *.log
 .coverage
 build/*
-config.py
 .env
