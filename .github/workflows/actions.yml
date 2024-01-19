@@ -1,0 +1,12 @@
+name: deploy bot
+run-name: ${{ github.actor }} deploy
+on:
+  push:
+    branches:
+      - feature/bot
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: self-hosted
+    steps:
+      - run: echo "start deploy"
+      - run: docker compose up --build
