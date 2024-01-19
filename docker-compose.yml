@@ -1,0 +1,8 @@
+version: "3.0"
+
+services:
+  app:
+    build: .
+    restart: always
+    environment:
+      BOT_TOKEN: $BOT_TOKEN
