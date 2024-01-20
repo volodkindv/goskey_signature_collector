@@ -1,10 +1,9 @@
-
 from pydantic import BaseModel
 from pydantic_settings import BaseSettings
 
 
 class BotConfig(BaseSettings):
-    bot_token: str            # Токен для доступа к телеграм-боту
+    bot_token: str  # Токен для доступа к телеграм-боту
 
 
 class Config(BaseModel):

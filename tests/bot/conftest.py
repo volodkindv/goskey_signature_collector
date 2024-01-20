@@ -1,3 +1,4 @@
+from contextlib import ExitStack
 from unittest.mock import AsyncMock, patch
 
 import pytest
@@ -30,10 +31,6 @@ class TestClient(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
     bot: Bot
     dispatcher: Dispatcher
-    message_answer_mock: AsyncMock
-    message_edit_text_mock: AsyncMock
-    callback_answer_mock: AsyncMock
-    answer_document_mock: AsyncMock
     # реализовать его как контекстный менеджер, чтоб он сам патчил
 
     async def send_message(self, message: Message) -> None:
@@ -45,47 +42,58 @@ class TestClient(BaseModel):
         await self.dispatcher.feed_update(self.bot, update)
 
     def get_last_message_answer_args(self) -> MessageAnswerArgs:
+        mock = Message.answer
+
         try:
-            text = self.message_answer_mock.call_args.args[0]
+            text = mock.call_args.args[0]
         except IndexError:
-            text = self.message_answer_mock.call_args.kwargs.get("text")
+            text = mock.call_args.kwargs.get("text")
+            # TODO научиться парсить сигнатуру метода в общем
 
         args = MessageAnswerArgs(text=text)
-        args.reply_markup = self.message_answer_mock.call_args.kwargs.get("reply_markup", None)
+        args.reply_markup = mock.call_args.kwargs.get("reply_markup", None)
 
         return args
 
     def get_last_callback_edit_message_args(self) -> CallbackMessageEditTextArgs:
-        text = self.message_edit_text_mock.call_args.kwargs["text"]
+        mock = Message.edit_text
+        text = mock.call_args.kwargs["text"]
         args = CallbackMessageEditTextArgs(text=text)
-        args.reply_markup = self.message_answer_mock.call_args.kwargs.get("reply_markup", None)
+        args.reply_markup = mock.call_args.kwargs.get("reply_markup", None)
 
         return args
 
     def get_last_document_sent(self):
-        document = self.answer_document_mock.call_args.kwargs["document"]
+        mock = Message.answer_document
+        document = mock.call_args.kwargs["document"]
 
         return document
 
 
 @pytest.fixture(scope="session")
-def test_client(anyio_backend):
+def test_client(anyio_backend, test_client_mocks):
     fake_token = "111:AAA-bbb"
     bot = get_bot(bot_token=fake_token)
     dispatcher = get_dispatcher()
 
-    with patch.object(Message, "answer", AsyncMock()) as answer_mock:
-        with patch.object(Message, "edit_text", AsyncMock()) as edit_text_mock:
-            with patch.object(CallbackQuery, "answer", AsyncMock()) as callback_answer_mock:
-                with patch.object(Message, "answer_document", AsyncMock()) as answer_document_mock:
-                    yield TestClient(
-                        bot=bot,
-                        dispatcher=dispatcher,
-                        message_answer_mock=answer_mock,
-                        message_edit_text_mock=edit_text_mock,
-                        callback_answer_mock=callback_answer_mock,
-                        answer_document_mock=answer_document_mock,
-                    )
+    yield TestClient(
+        bot=bot,
+        dispatcher=dispatcher,
+    )
+
+
+@pytest.fixture(scope="session")
+def test_client_mocks(anyio_backend) -> None:
+    to_patch = [
+        (Message, "answer"),
+        (Message, "edit_text"),
+        (Message, "answer_document"),
+        (CallbackQuery, "answer"),
+    ]
+    with ExitStack() as stack:
+        for obj, attr in to_patch:
+            stack.enter_context(patch.object(obj, attr, AsyncMock()))
+        yield
 
 
 @pytest.fixture(scope="session")
