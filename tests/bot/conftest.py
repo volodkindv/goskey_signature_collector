@@ -14,7 +14,8 @@ from aiogram.types import (
 )
 from pydantic import BaseModel, ConfigDict
 
-from src.bot.bot import get_bot, get_dispatcher
+from src.bot.bot import get_bot, get_dispatcher, init_app
+from src.bot.config_data.config import BotConfig, Config
 
 
 class MessageAnswerArgs(BaseModel):
@@ -31,7 +32,6 @@ class TestClient(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
     bot: Bot
     dispatcher: Dispatcher
-    # реализовать его как контекстный менеджер, чтоб он сам патчил
 
     async def send_message(self, message: Message) -> None:
         update = Update(update_id=1, message=message)
@@ -71,14 +71,18 @@ class TestClient(BaseModel):
 
 
 @pytest.fixture(scope="session")
-def test_client(anyio_backend, test_client_mocks):
-    fake_token = "111:AAA-bbb"
-    bot = get_bot(bot_token=fake_token)
-    dispatcher = get_dispatcher()
+async def test_client(anyio_backend, test_client_mocks):
+    test_config = Config(
+        tg_bot=BotConfig(
+            bot_token="111:AAA-bbb",
+            database_uri="sqlite+aiosqlite:///",
+        )
+    )
+    await init_app(test_config)
 
     yield TestClient(
-        bot=bot,
-        dispatcher=dispatcher,
+        bot=get_bot(),
+        dispatcher=get_dispatcher(),
     )
 
 

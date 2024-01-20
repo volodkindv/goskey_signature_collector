@@ -1,5 +1,7 @@
 import pytest
 
+from tests.bot.db_factories import AppealFactory
+
 from .conftest import TestClient
 from .factories import CallbackQueryFactory, DocumentFactory, MessageFactory, PrivateChatFactory
 
@@ -28,9 +30,11 @@ async def test_start(test_client: TestClient):
 async def test_appeals_list(test_client: TestClient):
     from src.bot.handlers.user_handlers import process_appeals_list_command
 
+    appeal = await AppealFactory.create_async()
+
     message = MessageFactory(text="/appeals")
     await test_client.send_message(message)
-    assert "Сбор подписей 1" in test_client.get_last_message_answer_args().text
+    assert appeal.text in test_client.get_last_message_answer_args().text
 
 
 async def test_appeals_item_exists(test_client: TestClient):

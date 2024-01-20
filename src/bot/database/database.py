@@ -1,28 +1,27 @@
-from functools import lru_cache
+from sqlalchemy import select
 
-from ..schemas.schemas import Appeal, UserContext
-
-
-@lru_cache
-def users_db() -> dict:
-    return {}
+from ..context import GlobalContext
+from ..schemas.schemas import Appeal
+from .models import AppealModel, Base
 
 
-def get_user_context(user_id: str) -> UserContext:
-    db = users_db()
-    user_context = db.get(user_id)
-    if not user_context:
-        user_context = UserContext()
-        db[user_id] = user_context
-    return user_context
+async def init_models() -> None:
+    async with GlobalContext.engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+
+
+async def get_appeals() -> list[AppealModel]:
+    async with GlobalContext.async_session() as session:
+        query = await session.execute(select(AppealModel).limit(20))
+        return query.scalars().all()
 
 
 async def get_current_appeals() -> list[Appeal]:
-    count = 5
+    appeals = await get_appeals()
     return [
         Appeal(
-            id=counter,
-            name=f"Сбор подписей {counter}",
+            id=appeal.id,
+            name=appeal.text,
         )
-        for counter in range(count)
+        for appeal in appeals
     ]
