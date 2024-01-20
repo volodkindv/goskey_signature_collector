@@ -61,18 +61,6 @@ async def test_scenario(test_client: TestClient):
     assert "Инициатива 1" in test_client.get_last_message_answer_args().text
 
 
-def test_get_appeal_files(test_client: TestClient):
-    from pathlib import Path
-
-    """Научиться отправлять пользователю инфо про инициативу
-    Ожидаем PDF файл во вложении
-
-
-    """
-    binary = Path("tests/bot/fixtures/Appeal_1_sample.pdf").read_bytes()
-    pass
-
-
 async def test_appeals_item_press_manual(test_client: TestClient):
     from src.bot.handlers.user_handlers import process_appeal_manual_cb, process_appeals_item_command
 
