@@ -10,8 +10,8 @@ class Lexicon:
     admin_menu = (
         "Управление ботом.\n"
         + "<b>Доступные команды:</b>\n"
-        + "<b>/admin_appeals:</b> показать список текущих инициатив\n"
-        + "<b>/admin_add_appeal:</b> добавить новую инициативу\n"
+        + "<b>/admin_appeals_list:</b> показать список текущих инициатив\n"
+        + "<b>/admin_appeals_add:</b> добавить новую инициативу\n"
     )
     help = start
 

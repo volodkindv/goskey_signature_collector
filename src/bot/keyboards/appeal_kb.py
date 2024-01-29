@@ -11,6 +11,8 @@ class CommandsLexicon:
 
 class AdminCommandsLexicon:
     name = "Сменить название"
+    publish = "Опубликовать"
+    hide = "Снять с публикации"
 
 
 def create_appeal_keyboard() -> InlineKeyboardMarkup:
@@ -22,11 +24,16 @@ def create_appeal_keyboard() -> InlineKeyboardMarkup:
     return kb_builder.as_markup()
 
 
-def create_appeal_admin_keyboard() -> InlineKeyboardMarkup:
+def create_appeal_admin_keyboard(is_hidden: bool) -> InlineKeyboardMarkup:
     button_change_name = InlineKeyboardButton(text="Сменить название", callback_data=AdminCommandsLexicon.name)
+    if is_hidden:
+        button_change_state = InlineKeyboardButton(text="Опубликовать", callback_data=AdminCommandsLexicon.publish)
+    else:
+        button_change_state = InlineKeyboardButton(text="Снять с публикации", callback_data=AdminCommandsLexicon.hide)
 
     kb_builder = InlineKeyboardBuilder()
     kb_builder.row(
         button_change_name,
+        button_change_state,
     )
     return kb_builder.as_markup()

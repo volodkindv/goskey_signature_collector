@@ -26,6 +26,26 @@ async def get_appeal(appeal_id: str) -> AppealModel | None:
         return query.scalars().first()
 
 
+async def edit_appeal(appeal_id: str, new_text: str) -> AppealModel | None:
+    async with GlobalContext.async_session() as session:
+        query_text = select(AppealModel).filter(AppealModel.id == appeal_id)
+        query = await session.execute(query_text)
+        appeal = query.scalars().first()  # TODO None
+        appeal.text = new_text
+        await session.commit()
+        return appeal
+
+
+async def change_appeal_visibility(appeal_id: str, is_hidden: bool) -> AppealModel | None:
+    async with GlobalContext.async_session() as session:
+        query_text = select(AppealModel).filter(AppealModel.id == appeal_id)
+        query = await session.execute(query_text)
+        appeal = query.scalars().first()  # TODO None
+        appeal.is_hidden = is_hidden
+        await session.commit()
+        return appeal
+
+
 async def create_appeal(text: str = "Новая инициатива") -> AppealModel:
     async with GlobalContext.async_session() as session:
         new_appeal = AppealModel(text=text)
