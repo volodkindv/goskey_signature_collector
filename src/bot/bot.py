@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_asyn
 from .config_data.config import Config, load_config
 from .context import GlobalContext
 from .database.database import init_models
-from .handlers import common_handlers, user_handlers
+from .handlers import admin_handlers, common_handlers, user_handlers
 from .keyboards.main_menu import set_main_menu
 
 logger = logging.getLogger(__name__)
@@ -16,6 +16,7 @@ def get_routers() -> list[Router]:
     return [
         common_handlers.router,
         user_handlers.router,
+        admin_handlers.router,
     ]
 
 

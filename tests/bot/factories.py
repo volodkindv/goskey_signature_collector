@@ -1,5 +1,16 @@
+from __future__ import annotations
+
 import factory
 from aiogram.types import CallbackQuery, Chat, Document, InaccessibleMessage, Message, User
+
+
+class UserFactory(factory.Factory):
+    class Meta:
+        model = User
+
+    id: int = factory.Faker("pyint")
+    is_bot: bool = False
+    first_name: str = factory.Faker("name")
 
 
 class PrivateChatFactory(factory.Factory):
@@ -8,6 +19,7 @@ class PrivateChatFactory(factory.Factory):
 
     type = "private"
     id = factory.Faker("pyint")
+    username = factory.Faker("name")
 
 
 class MessageFactory(factory.Factory):
@@ -17,6 +29,7 @@ class MessageFactory(factory.Factory):
     chat = factory.SubFactory(PrivateChatFactory)
     date = factory.Faker("date_object")  # лучше текущая дата/время
     message_id = factory.Faker("pyint")  # sequence лучше
+    from_user = factory.SubFactory(UserFactory)
 
 
 class DocumentFactory(factory.Factory):
@@ -33,7 +46,7 @@ class CallbackQueryFactory(factory.Factory):
 
     id: str = "123"
     chat_instance: str = "123"
-    from_user: User = User(id=1, is_bot=False, first_name="Dan")
+    from_user: User = factory.SubFactory(UserFactory)
     message: Message | InaccessibleMessage | None = None
     """*Optional*. Message sent by the bot with the callback button that originated the query"""
     # inline_message_id: str|None = None

@@ -7,6 +7,7 @@ from pydantic_settings import BaseSettings
 class BotConfig(BaseSettings):
     bot_token: str  # Токен для доступа к телеграм-боту
     database_uri: str
+    admin_user_ids: str
 
 
 class Config(BaseModel):

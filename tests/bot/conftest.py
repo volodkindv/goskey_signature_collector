@@ -76,6 +76,7 @@ async def test_client(anyio_backend, test_client_mocks):
         tg_bot=BotConfig(
             bot_token="111:AAA-bbb",
             database_uri="sqlite+aiosqlite:///",
+            admin_user_ids="123,456",
         )
     )
     await init_app(test_config)
