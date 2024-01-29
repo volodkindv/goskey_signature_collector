@@ -12,6 +12,7 @@ from ..database.database import (
     change_appeal_visibility,
     create_appeal,
     get_appeal,
+    get_appeal_signatures,
     get_appeals,
 )
 from ..filters.filters import IsAdminUser
@@ -93,6 +94,15 @@ async def admin_appeal_cb_hide(callback: CallbackQuery, state: FSMContext) -> No
     appeal = await change_appeal_visibility(appeal_id, is_hidden=True)
     response_text = format_appeal_admin(appeal)
     await callback.message.answer(response_text, reply_markup=create_appeal_admin_keyboard(appeal.is_hidden))
+    await callback.answer()
+
+
+@router.callback_query(F.data == AdminCommandsLexicon.get_signatures)
+async def admin_appeal_get_signatures(callback: CallbackQuery) -> None:
+    appeal_id = get_appeal_id_from_message(callback.message)  # TODO
+    signatures = await get_appeal_signatures(appeal_id)
+    for signature in signatures:
+        await callback.message.answer_document(document=signature.file_id)
     await callback.answer()
 
 

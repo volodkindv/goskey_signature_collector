@@ -66,8 +66,10 @@ extend-ignore = [
     "WPS432",  # Forbid magic numbers
     "WPS604",  # Forbid incorrect nodes inside class definitions
     "WPS300",  # Found local folder import
-    "WPS237", # Found a too complex `f` string
-    "WPS412", # Found `__init__.py` module with logic
+    "WPS237",  # Found a too complex `f` string
+    "WPS412",  # Found `__init__.py` module with logic
+    "WPS217",  # Found too many await expressions
+    "WPS204",  # Found overused expression
 ]
 
 per-file-ignores = [

@@ -19,14 +19,21 @@ async def get_appeals(show_hidden: bool = False) -> list[AppealModel]:
         return query.scalars().all()
 
 
-async def get_appeal(appeal_id: str) -> AppealModel | None:
+async def get_appeal(appeal_id: int) -> AppealModel | None:
     async with GlobalContext.async_session() as session:
         query_text = select(AppealModel).filter(AppealModel.id == appeal_id)
         query = await session.execute(query_text)
         return query.scalars().first()
 
 
-async def change_appeal_text(appeal_id: str, new_text: str) -> AppealModel | None:
+async def get_appeal_signatures(appeal_id: int) -> list[UserSignatureModel]:
+    async with GlobalContext.async_session() as session:
+        query_text = select(UserSignatureModel).filter(UserSignatureModel.appeal_id == appeal_id)
+        query = await session.execute(query_text)
+        return query.scalars().all()
+
+
+async def change_appeal_text(appeal_id: int, new_text: str) -> AppealModel | None:
     async with GlobalContext.async_session() as session:
         query_text = select(AppealModel).filter(AppealModel.id == appeal_id)
         query = await session.execute(query_text)
@@ -36,7 +43,7 @@ async def change_appeal_text(appeal_id: str, new_text: str) -> AppealModel | Non
         return appeal
 
 
-async def change_appeal_visibility(appeal_id: str, is_hidden: bool) -> AppealModel | None:
+async def change_appeal_visibility(appeal_id: int, is_hidden: bool) -> AppealModel | None:
     async with GlobalContext.async_session() as session:
         query_text = select(AppealModel).filter(AppealModel.id == appeal_id)
         query = await session.execute(query_text)
@@ -46,7 +53,7 @@ async def change_appeal_visibility(appeal_id: str, is_hidden: bool) -> AppealMod
         return appeal
 
 
-async def change_appeal_file(appeal_id: str, new_file_id: str, new_file_name: str) -> AppealModel | None:
+async def change_appeal_file(appeal_id: int, new_file_id: str, new_file_name: str) -> AppealModel | None:
     async with GlobalContext.async_session() as session:
         query_text = select(AppealModel).filter(AppealModel.id == appeal_id)
         query = await session.execute(query_text)

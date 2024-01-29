@@ -4,14 +4,14 @@ from aiogram import Router
 from aiogram.filters import Filter
 from aiogram.types import Message
 
-from ..config_data.config import load_config
+from ..context import GlobalContext
 
 router = Router()
 
 
 @lru_cache
 def admin_user_ids() -> list[str]:
-    return load_config().tg_bot.admin_user_ids.split(",")
+    return GlobalContext.config.tg_bot.admin_user_ids.split(",")
 
 
 class IsAdminUser(Filter):

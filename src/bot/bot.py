@@ -14,9 +14,9 @@ logger = logging.getLogger(__name__)
 
 def get_routers() -> list[Router]:
     return [
-        common_handlers.router,
         user_handlers.router,
         admin_handlers.router,
+        common_handlers.router,
     ]
 
 

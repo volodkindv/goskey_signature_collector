@@ -81,7 +81,6 @@ async def test_client(anyio_backend, test_client_mocks):
         )
     )
     await init_app(test_config)
-    await create_appeal("Инициатива 1")
 
     yield TestClient(
         bot=get_bot(),

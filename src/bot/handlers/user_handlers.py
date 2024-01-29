@@ -32,7 +32,7 @@ async def process_appeals_list_command(message: Message) -> None:
 @router.message(F.text.regexp(r"^/appeals_(\d+)").as_("match"))
 async def process_appeals_item_command(message: Message, match: Match) -> None:
     digits = match.group(1)
-    appeal = await get_appeal(str(digits))
+    appeal = await get_appeal(int(digits))
     if appeal is None:
         await message.answer("Инициатива не найдена")
         return
