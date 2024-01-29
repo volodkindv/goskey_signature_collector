@@ -6,3 +6,7 @@ services:
     restart: always
     environment:
       BOT_TOKEN: $BOT_TOKEN
+      DATABASE_URI: $DATABASE_URI
+      ADMIN_USER_IDS: $ADMIN_USER_IDS
+    volumes:
+      - ./data:/app/data
