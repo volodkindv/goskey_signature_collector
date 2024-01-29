@@ -1,7 +1,6 @@
 from sqlalchemy import select
 
 from ..context import GlobalContext
-from ..schemas.schemas import Appeal
 from .models import AppealModel, Base
 
 
@@ -10,18 +9,26 @@ async def init_models() -> None:
         await conn.run_sync(Base.metadata.create_all)
 
 
-async def get_appeals() -> list[AppealModel]:
+async def get_appeals(show_hidden: bool = False) -> list[AppealModel]:
     async with GlobalContext.async_session() as session:
-        query = await session.execute(select(AppealModel).limit(20))
+        query_text = select(AppealModel).limit(20)
+        if not show_hidden:
+            query_text = query_text.filter(AppealModel.is_hidden == False)  # noqa: E712
+
+        query = await session.execute(query_text)
         return query.scalars().all()
 
 
-async def get_current_appeals() -> list[Appeal]:
-    appeals = await get_appeals()
-    return [
-        Appeal(
-            id=appeal.id,
-            name=appeal.text,
-        )
-        for appeal in appeals
-    ]
+async def get_appeal(appeal_id: str) -> AppealModel | None:
+    async with GlobalContext.async_session() as session:
+        query_text = select(AppealModel).filter(AppealModel.id == appeal_id)
+        query = await session.execute(query_text)
+        return query.scalars().first()
+
+
+async def create_appeal(text: str = "Новая инициатива") -> AppealModel:
+    async with GlobalContext.async_session() as session:
+        new_appeal = AppealModel(text=text)
+        session.add(new_appeal)
+        await session.commit()
+    return new_appeal

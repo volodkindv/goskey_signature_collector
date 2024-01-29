@@ -1,29 +1,33 @@
+from re import Match
+
 from aiogram import F, Router  # noqa: WPS347
 from aiogram.filters import Command
 from aiogram.types import CallbackQuery, Message, ReplyKeyboardRemove
 
-from ..database.database import get_current_appeals
+from ..database.database import get_appeal, get_appeals
 from ..keyboards.appeal_kb import CommandsLexicon, create_appeal_keyboard
-from ..schemas.schemas import Appeal
+from ..services.common import format_appeal
 
 router = Router()
 
 
-def format_appeal(appeal: Appeal) -> str:
-    return f"/appeals_{appeal.id} {appeal.name}"
-
-
 @router.message(Command(commands="appeals"))
 async def process_appeals_list_command(message: Message) -> None:
-    appeals = await get_current_appeals()
+    appeals = await get_appeals()
     lines = ["Список инициатив"]
     lines.extend([format_appeal(appeal) for appeal in appeals])
     await message.answer("\n".join(lines))
 
 
-@router.message(F.text.startswith("/appeals_"))
-async def process_appeals_item_command(message: Message) -> None:
-    await message.answer("Инициатива 1", reply_markup=create_appeal_keyboard())
+@router.message(F.text.regexp(r"^/appeals_(\d+)").as_("match"))
+async def process_appeals_item_command(message: Message, match: Match) -> None:
+    digits = match.group(1)
+    appeal = await get_appeal(str(digits))
+    if appeal is None:
+        await message.answer("Инициатива не найдена")
+        return
+
+    await message.answer(format_appeal(appeal), reply_markup=create_appeal_keyboard())
 
 
 @router.callback_query(F.data == CommandsLexicon.sign)

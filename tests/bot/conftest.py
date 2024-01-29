@@ -16,6 +16,7 @@ from pydantic import BaseModel, ConfigDict
 
 from src.bot.bot import get_bot, get_dispatcher, init_app
 from src.bot.config_data.config import BotConfig, Config
+from src.bot.database.database import create_appeal
 
 
 class MessageAnswerArgs(BaseModel):
@@ -80,6 +81,7 @@ async def test_client(anyio_backend, test_client_mocks):
         )
     )
     await init_app(test_config)
+    await create_appeal("Инициатива 1")
 
     yield TestClient(
         bot=get_bot(),
