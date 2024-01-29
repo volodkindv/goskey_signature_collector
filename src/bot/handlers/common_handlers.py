@@ -15,3 +15,8 @@ async def process_start_command(message: Message) -> None:
 @router.message(Command(commands="help"))
 async def process_help_command(message: Message) -> None:
     await message.answer(Lexicon.help)
+
+
+@router.message()
+async def any_text(message: Message) -> None:
+    await message.answer("Неизвестная команда")

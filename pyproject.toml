@@ -16,6 +16,8 @@ odswriter = "^0.4.0"
 aiogram = "^3.3.0"
 pydantic-settings = "^2.1.0"
 anyio = "^4.2.0"
+sqlalchemy = "^2.0.25"
+aiosqlite = "^0.19.0"
 
 [tool.poetry.group.lint.dependencies]
 black = "^23.9.1"
@@ -64,8 +66,10 @@ extend-ignore = [
     "WPS432",  # Forbid magic numbers
     "WPS604",  # Forbid incorrect nodes inside class definitions
     "WPS300",  # Found local folder import
-    "WPS237", # Found a too complex `f` string
-    "WPS412", # Found `__init__.py` module with logic
+    "WPS237",  # Found a too complex `f` string
+    "WPS412",  # Found `__init__.py` module with logic
+    "WPS217",  # Found too many await expressions
+    "WPS204",  # Found overused expression
 ]
 
 per-file-ignores = [
